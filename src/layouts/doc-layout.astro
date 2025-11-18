@@ -1,0 +1,66 @@
+---
+// Very small documentation-style layout with light/dark toggle
+const { title } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title ?? '2nd PUC Science'}</title>
+    <style>
+      :root { --bg: #ffffff; --fg:#111827; --accent:#0b5cff; }
+      [data-theme="dark"] { --bg:#0b1220; --fg:#e6eef8; --accent:#58a6ff; }
+      body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:var(--fg); }
+      .page { display:flex; min-height:100vh; }
+      .sidebar { width:260px; padding:20px; border-right:1px solid rgba(0,0,0,0.06); }
+      .content { flex:1; padding:28px; }
+      .toggle { margin-top:10px; cursor:pointer; padding:6px 10px; border-radius:6px; background:var(--accent); color:white; display:inline-block; }
+      a { color:var(--accent); text-decoration:none }
+      nav ul { padding-left:0; list-style:none }
+      nav li { margin:8px 0 }
+      @media (max-width:800px){ .sidebar{display:none} }
+    </style>
+  </head>
+  <body>
+    <div class="page" id="page">
+      <aside class="sidebar">
+        <h3>2nd PUC Science</h3>
+        <nav>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/notes/physics/">Physics</a></li>
+            <li><a href="/notes/chemistry/">Chemistry</a></li>
+            <li><a href="/notes/biology/">Biology</a></li>
+            <li><a href="/notes/maths/">Mathematics</a></li>
+            <li><a href="/pyqs/">PYQs</a></li>
+            <li><a href="/mcq/">MCQs</a></li>
+            <li><a href="/practicals/">Practicals</a></li>
+            <li><a href="/downloads/">Downloads</a></li>
+            <li><a href="/bots/">Bots</a></li>
+            <li><a href="/updates/">Updates</a></li>
+          </ul>
+        </nav>
+        <div style="margin-top:18px">
+          <button id="themeToggle" class="toggle">Toggle Light / Dark</button>
+        </div>
+      </aside>
+
+      <main class="content">
+        <slot />
+      </main>
+    </div>
+
+    <script>
+      const toggle = document.getElementById('themeToggle');
+      const root = document.documentElement;
+      // Load saved theme
+      const saved = localStorage.getItem('puc-theme') || 'light';
+      if (saved === 'dark') root.setAttribute('data-theme','dark');
+      toggle.addEventListener('click', () => {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        if (isDark) { root.removeAttribute('data-theme'); localStorage.setItem('puc-theme','light') }
+        else { root.setAttribute('data-theme','dark'); localStorage.setItem('puc-theme','dark') }
+      });
+    </script>
+  </body>
+</html>
